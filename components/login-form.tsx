@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/stateful-button";
 import {
   Card,
   CardContent,
@@ -24,6 +24,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Label } from "./ui/label";
+import Link from "next/link";
 
 export const loginSchema = z.object({
   email: z.email({ error: "Invalid email address." }),
@@ -35,7 +37,7 @@ export const loginSchema = z.object({
 export function LoginForm({
   className,
   ...props
-}: React.ComponentProps<"div">) {
+}: React.ComponentProps<"form">) {
   const router = useRouter();
 
   const form = useForm<z.infer<typeof loginSchema>>({
@@ -59,58 +61,75 @@ export function LoginForm({
       router.push("/main");
     } else {
       // ❌ show error (you can also set form error)
-    //   console.error(res?.error);
+      //   console.error(res?.error);
       alert("Invalid email or password");
     }
   }
 
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card>
-        <CardHeader>
-          <CardTitle>Login to your account</CardTitle>
-          <CardDescription>
-            Enter your email below to login to your account
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="email"
-                        placeholder="agrihub@example.com"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input type="password" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button type="submit">Login</Button>
-            </form>
-          </Form>
-        </CardContent>
-      </Card>
-    </div>
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className={cn("flex flex-col gap-6", className)}
+        {...props}
+      >
+        <div className="flex flex-col gap-2">
+          <h1 className="text-3xl font-semibold">Welcome back</h1>
+          <p className="text-muted-foreground text-balance">
+            Welcome back. Please enter your details.
+          </p>
+        </div>
+        <div className="grid gap-6">
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="font-normal">Email</FormLabel>
+                <FormControl>
+                  <Input
+                    className="rounded-full"
+                    type="email"
+                    placeholder="Enter your email"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="font-normal">Password</FormLabel>
+                <FormControl>
+                  <Input
+                    className="rounded-full"
+                    type="password"
+                    placeholder="********"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button type="submit" className="rounded-full bg-foreground">
+            Sign In
+          </Button>
+        </div>
+        <div className="text-center text-sm font-light">
+          Don&apos;t have an account?{" "}
+          <Link
+            href={"/auth/register"}
+            className="underline underline-offset-4 font-semibold"
+          >
+            Sign up
+          </Link>
+        </div>
+      </form>
+    </Form>
   );
 }
