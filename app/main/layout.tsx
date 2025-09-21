@@ -1,7 +1,12 @@
+import type { ReactNode } from "react";
+
+import { ReduxProvider } from "@/redux/provider";
+
 export default function MainLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
-  return <>{children}</>;
+  return <ReduxProvider>{children}</ReduxProvider>;
 }
+
