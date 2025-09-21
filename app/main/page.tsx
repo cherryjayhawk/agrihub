@@ -1,17 +1,13 @@
+import Navbar from "@/components/layout/home/Navbar";
+import HomeContent from "@/components/home/HomeContent";
+import Footer from "@/components/layout/home/Footer";
 
-// import { auth } from "@/auth";
-// import { redirect } from "next/navigation";
-
-export default async function MainPage() {
-//   const session = await auth();
-
-//   if (!session?.user) {
-//     redirect("/login");
-//   }
-
+export default function HomePage() {
   return (
-    <div className="p-6">
-      <p className="mt-2">This is your main dashboard.</p>
-    </div>
+    <>
+      <Navbar />
+      <HomeContent />
+      <Footer />
+    </>
   );
 }
